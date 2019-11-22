@@ -7,12 +7,33 @@ at arbitrary scales.
 
 It uses Vector2 and Vector3 from three.js as coordinate records. 
 
-Note: Cubes and Hexes are inteneed to be *immutable*. changing the 
+CubeCoords and Hexes are designed to be *immutable*. changing the 
 value of one or the other can be unpredictable.
 
 Also, CubeCoords are not linked in any way to their Hexes; it is 
 the users' responsibility to use the proper cubeCoords with the 
 proper Hexes matrix. 
+
+The reason I wrote this library is that I wanted a *focused, unbounded* and *efficient*
+Hexagon library for visualization purposes. 
+
+By Focused I mean by taking a single
+coordinate system the interface is smaller and more specific. 
+
+By unbounded I mean that there is no "edges" or center to the visual space.
+Coordinates can be expressed in any range of values, as the entire population 
+is never retained by any of the libraries' methods. As the task I have in mind
+is a "universe" grid, this gives me the ability to operate on an arbitrary chunk of 
+2d space. 
+
+By efficient, I mean that very little data is retained in the structures returned.
+Corner points are returned dynamically, meaning only the cube coordinates are retained
+within the Hex ecosystem. 
+
+The richest aspect of this system is you can return all the coordinates within
+a rectangle and/or meeting a filter test -- so that you can return any sort of geometric
+shape you can conceive of if you can return a function that expresses whether an individual
+point is contained by it or not. 
 
 ## Elements
 
