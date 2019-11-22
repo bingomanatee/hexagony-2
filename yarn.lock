@@ -2597,11 +2597,6 @@ pkg-dir@^3.0.0:
   dependencies:
     find-up "^3.0.0"
 
-point-geometry@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/point-geometry/-/point-geometry-0.1.0.tgz#a4cab526e2c2449961137892942338578af62c0e"
-  integrity sha1-pMq1JuLCRJlhE3iSlCM4V4r2LA4=
-
 prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"

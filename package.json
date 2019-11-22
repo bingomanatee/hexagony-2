@@ -17,12 +17,11 @@
     "@wonderlandlabs/n": "^1.0.2",
     "@wonderlandlabs/propper": "^2.0.5",
     "is": "^3.3.0",
-    "lodash": "^4.17.15",
-    "point-geometry": "^0.1.0",
-    "three": "^0.110.0"
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
+    "three": "^0.110.0",
     "canvas": "^2.6.0",
     "eslint": "^6.3.0",
     "eslint-config-airbnb": "^18.0.1",
