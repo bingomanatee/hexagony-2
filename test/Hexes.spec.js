@@ -21,10 +21,13 @@ const {
 ava(tap);
 
 const draw = async (cornerSets, config = {}, outputFilename) => {
+  const noisy = _.get(config, 'noisy', false);
+
   const max_x = _.get(config, 'max_x', 5);
   const max_y = _.get(config, 'max_y', 5);
   const min_x = _.get(config, 'min_x', -5);
-  const min_y = _.get(config, 'min_x', -5);
+  const min_y = _.get(config, 'min_y', -5);
+
   const pointMap = _.get(config, 'points');
   const visual_scale = _.get(config, 'visual_scale', 50);
   const padding = _.get(config, 'padding', 5);
@@ -32,7 +35,13 @@ const draw = async (cornerSets, config = {}, outputFilename) => {
   const p2 = _N(padding).times(2);
   const width = _N(max_x).sub(min_x).times(visual_scale).plus(p2).value;
   const height = _N(max_y).sub(min_y).times(visual_scale).plus(p2).value;
-  const can = createCanvas(width, height);
+  let can;
+  try {
+    can = createCanvas(width, height);
+  } catch (err) {
+    console.log('error making canvas', width, height, err);
+    return;
+  }
   const ctx = can.getContext('2d');
   ctx.font = '14pt Helvetica';
 
@@ -42,19 +51,18 @@ const draw = async (cornerSets, config = {}, outputFilename) => {
     }
     return new Vector2(
       _N(x).sub(min_x).times(visual_scale).plus(padding).value,
-      _N(y).sub(min_x).times(visual_scale).plus(padding).value,
+      _N(y).sub(min_y).times(visual_scale).plus(padding).value,
     );
   };
 
+  // background
   ctx.beginPath();
   ctx.fillStyle = '#FFFFFF';
-  ctx.moveTo(-1, -1);
-  ctx.lineTo(width + 1, -1);
-  ctx.lineTo(width + 1, height + 1);
-  ctx.lineTo(-1, height - 1);
+  ctx.rect(-1, -1, width + 2, height + 2);
   ctx.closePath();
   ctx.fill();
 
+  // horionTAL lines;
   ctx.beginPath();
   ctx.strokeStyle = '#75adda';
   ctx.lineWidth = 1;
@@ -307,7 +315,23 @@ tap.test(p.name, (suite) => {
         min_x: -1, max_x: 10, min_y: -1, max_y: 10,
       }, 'floodedRect');
 
-      const closeToRect = fr.end();
+      fr.end();
+    });
+
+    testCC.test('floodRect - distant', (fr) => {
+      const matrix = new Hexes({ scale: 0.25, pointy: true });
+      const coords = matrix.floodRect(140, 16, 142, 18, true);
+
+      const corners = coords.map((c) => matrix.corners(c));
+      draw(corners, {
+        min_x: 100,
+        max_x: 145,
+        min_y: -1,
+        max_y: 20,
+        view_scale: 15,
+      }, 'floodedRect-distant');
+
+      fr.end();
     });
 
     testCC.test('floodQuery', (fq) => {
