@@ -1,7 +1,10 @@
 /* eslint-disable no-unused-vars */
 import _N from '@wonderlandlabs/n';
-import _ from 'lodash';
+
 import is from 'is';
+import uniqBy from './modularize/uniqBy';
+import differenceBy from './modularize/differenceBy';
+
 import { Vector2 } from './Vector2';
 import { Vector3 } from './Vector3';
 import { cubeString, isPoint3Like } from '../utils';
@@ -175,7 +178,7 @@ Coord.util = {
     return [];
   },
   uniq(coords) {
-    return _.uniqBy(Coord.util.goodCoords(coords), cubeString);
+    return uniqBy(Coord.util.goodCoords(coords), cubeString);
   },
 
   toMap(coords) {
@@ -186,7 +189,7 @@ Coord.util = {
     return Coord.util.uniq(Coord.util.goodCoords(coordsA).concat(Coord.util.goodCoords(coordsB)));
   },
   diff(coordsA, coordsB) {
-    return _.differenceBy(Coord.util.goodCoords(coordsA), Coord.util.goodCoords(coordsB), cubeString());
+    return differenceBy(Coord.util.goodCoords(coordsA), Coord.util.goodCoords(coordsB), cubeString());
   },
 };
 

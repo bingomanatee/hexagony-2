@@ -1,6 +1,7 @@
-import _ from 'lodash';
 import _N from '@wonderlandlabs/n';
 import is from 'is';
+import lGet from './modularize/get';
+import isEqual from './modularize/isEqual';
 import { Vector2 } from './Vector2';
 
 import CubeCoord from './CubeCoord';
@@ -12,8 +13,8 @@ const cos30 = _N(30).rad().cos().value;
 
 export default class Hexes {
   constructor(props) {
-    this.scale = _.get(props, 'scale', 1);
-    this.pointy = _.get(props, 'pointy', false);
+    this.scale = lGet(props, 'scale', 1);
+    this.pointy = lGet(props, 'pointy', false);
   }
 
   toString() {
@@ -158,7 +159,7 @@ export default class Hexes {
       if (is.number(extend) && (extend > 1) && newKeys.length > extend) {
         break;
       }
-    } while (!_.isEqual(newKeys, keys));
+    } while (!isEqual(newKeys, keys));
 
     return Array.from(hexes.values());
   }
@@ -195,7 +196,7 @@ export default class Hexes {
       grow(false);
 
       newKeys = Array.from(hexes.keys());
-    } while (!_.isEqual(newKeys, keys));
+    } while (!isEqual(newKeys, keys));
     // grow twice more to cover border;
 
     if (extend) grow(true);
