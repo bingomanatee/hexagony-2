@@ -138,7 +138,7 @@ const draw = async (cornerSets, config = {}, outputFilename) => {
     ctx.stroke();
   }
 
-  return can.createPNGStream().pipe(fs.createWriteStream(`${outputFilename}.png`));
+  return can.createPNGStream().pipe(fs.createWriteStream(`images/${outputFilename}.png`));
 };
 
 tap.test(p.name, (suite) => {
@@ -316,6 +316,41 @@ tap.test(p.name, (suite) => {
       }, 'floodedRect');
 
       fr.end();
+    });
+
+    testCC.skip('floodRectOld', (fr) => {
+      const matrix = new Hexes({ scale: 0.5, pointy: false });
+      const coords = matrix.floodRectOld(3, 3, 5, 8, true);
+
+      const corners = coords.map((c) => matrix.corners(c));
+
+      draw(corners, {
+        min_x: -1, max_x: 10, min_y: -1, max_y: 10,
+      }, 'floodedRect2');
+
+      fr.end();
+    });
+
+    testCC.skip('floodRectComparison', async (frc) => {
+      const matrix = new Hexes({ scale: 0.25, pointy: false });
+      const t1 = Date.now();
+      const Fcoords2 = matrix.floodRectOld(3, 3, 20, 20, true);
+      const time2 = Date.now() - t1;
+
+      const t2 = Date.now();
+      const Fcoords = matrix.floodRect(3, 3, 20, 20, true);
+      const time = Date.now() - t2;
+      const corners2 = Fcoords2.map((c) => matrix.corners(c));
+      const corners = Fcoords.map((c) => matrix.corners(c));
+
+      console.log('floodRectOld time: ', time2, 'floodRect time', time);
+      await draw(corners2, {
+        min_x: -1, max_x: 25, min_y: -1, max_y: 25,
+      }, 'floodedRect2tt');
+      await draw(corners, {
+        min_x: -1, max_x: 25, min_y: -1, max_y: 25,
+      }, 'floodedRecttt');
+      frc.end();
     });
 
     testCC.test('floodRect - distant', (fr) => {

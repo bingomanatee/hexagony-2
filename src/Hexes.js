@@ -3,7 +3,7 @@ import is from 'is';
 import lGet from './modularize/get';
 import isEqual from './modularize/isEqual';
 import { Vector2 } from './Vector2';
-
+import floodRect from './floodRect';
 import CubeCoord from './CubeCoord';
 import {
   isPoint2Like, hex2string, box2array, array2box,
@@ -164,7 +164,11 @@ export default class Hexes {
     return Array.from(hexes.values());
   }
 
-  floodRect(...args) {
+  floodRect(x1, y1, x2, y2, expand = true) {
+    return floodRect(x1, y1, x2, y2, expand, this);
+  }
+
+  floodRectOld(...args) {
     const rect = array2box(...args);
     const extend = args[4];
 

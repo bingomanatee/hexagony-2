@@ -1,37 +1,41 @@
-import { CubeCoord, Hexes } from '@wonderlandlabs/hexagony';
-import _ from 'lodash';
+import mean from './modularize/mean';
+import range from './modularize/range';
+import CubeCoord from './CubeCoord';
+
 /**
  *
  * @param xMin {number}
  * @param yMin {number}
  * @param xMax {number}
  * @param yMax {number}
+ * @param grow {boolean}
  * @param matrix {Hexes}
  */
-export default (xMin, yMin, xMax, yMax, matrix) => {
+export default (xMin, yMin, xMax, yMax, grow, matrix) => {
   function contains({ x, y }) {
     return x >= xMin && x <= xMax && y >= yMin && y <= yMax;
   }
 
-  const space = [
-    matrix.nearestHex(xMin, yMin),
-    matrix.nearestHex(xMin, yMax),
-    matrix.nearestHex(xMax, yMin),
-    matrix.nearestHex(xMax, yMax),
-  ];
+  const center = matrix.nearestHex(mean([xMin, xMax]), mean([yMin, yMax]));
 
-  const cubeXmin = _(space).map('x').min();
-  const cubeXmax = _(space).map('x').max();
-  const cubeYmin = _(space).map('y').min();
-  const cubeYmax = _(space).map('y').max();
+  const radius = Math.max(xMax - xMin, yMax - yMin) * 2 / matrix.scale;
+
+  // console.log('floodRect center = ', center, center.toXY(matrix));
 
   const hexes = new Map();
-  _.range(cubeXmin, cubeXmax + 1).forEach((x) => _.range(cubeYmin, cubeYmax + 1).forEach((y) => {
-    const c = new CubeCoord(x, y);
-    if (contains(c.toXY(matrix))) {
-      hexes.set(c.id, c);
-    }
-  }));
+  range(center.x - radius, center.x + radius)
+    .forEach((x) => range(center.y - radius, center.y + radius).forEach((y) => {
+      const c = new CubeCoord(x, y);
+      const point = c.toXY(matrix);
+      // console.log('testing hex', c, 'point', point);
+      if (contains(point)) {
+      //   console.log('---- pass', c.toString());
+        hexes.set(c.toString(), c);
+      }
+    }));
 
-  hexes.forEach((h) => h.neighbors.forEach((h2) => hexes.push(h2)));
+  if (grow) {
+    Array.from(hexes.values()).forEach((h) => h.neighbors.forEach((h2) => hexes.set(h2.toString(), h2)));
+  }
+  return Array.from(hexes.values());
 };
