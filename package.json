@@ -1,6 +1,6 @@
 {
   "name": "@wonderlandlabs/hexagony",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A vector based cube coordinate system for Hexagonal geometry",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -20,8 +20,6 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
-    "lodash": "^4.17.15",
-    "three": "^0.110.0",
     "canvas": "^2.6.0",
     "eslint": "^6.3.0",
     "eslint-config-airbnb": "^18.0.1",
@@ -29,11 +27,13 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^2.1.1",
+    "lodash": "^4.17.15",
     "rollup": "^1.22.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^5.1.2",
-    "tap": "^14.6.1"
+    "tap": "^14.6.1",
+    "three": "^0.110.0"
   },
   "author": "David Edelhart",
   "license": "MIT",
